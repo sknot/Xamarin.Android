@@ -13,8 +13,17 @@ using Android.Widget;
 
 namespace FragmentNavigationExample.Fragments
 {
-    public class ThreeFragment : Fragment
+    public class ThirdFragment : Fragment
     {
+        public static ThirdFragment NewInstance()
+        {
+
+            ThirdFragment fragment = new ThirdFragment();
+
+            fragment.Arguments = new Bundle();
+
+            return fragment;
+        }
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -27,7 +36,8 @@ namespace FragmentNavigationExample.Fragments
             // Use this to return your custom view for this Fragment
             // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
 
-            return base.OnCreateView(inflater, container, savedInstanceState);
+            //return base.OnCreateView(inflater, container, savedInstanceState);
+            return inflater.Inflate(Resource.Layout.ThirdLayout, container, false);
         }
     }
 }

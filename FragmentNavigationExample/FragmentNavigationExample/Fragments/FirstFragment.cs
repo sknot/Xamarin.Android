@@ -15,6 +15,15 @@ namespace FragmentNavigationExample.Fragments
 {
     public class FirstFragment : Fragment
     {
+        public static FirstFragment NewInstance() {
+
+            FirstFragment fragment = new FirstFragment();
+
+            fragment.Arguments = new Bundle();
+
+            return fragment;
+        }
+
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -27,7 +36,26 @@ namespace FragmentNavigationExample.Fragments
             // Use this to return your custom view for this Fragment
             // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
 
-            return base.OnCreateView(inflater, container, savedInstanceState);
+            return inflater.Inflate(Resource.Layout.FirstLayout, container, false);
+        }
+
+        public override void OnViewCreated(View view, Bundle savedInstanceState)
+        {
+            EditText etName = (EditText)view.FindViewById(Resource.Id.etName);
+
+            Button btnAvanza = (Button)this.View.FindViewById(Resource.Id.btnAvanzaA2nd);
+
+            btnAvanza.Click += delegate{
+                var fragment = SecondFragment.NewInstance(etName.Text);
+
+                var transaction = this.FragmentManager.BeginTransaction();
+
+                transaction.Replace(Resource.Id.mainContainer, fragment);
+
+                transaction.AddToBackStack(null);
+
+                transaction.Commit();
+            };
         }
     }
 }

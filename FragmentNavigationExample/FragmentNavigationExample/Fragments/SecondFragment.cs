@@ -15,11 +15,24 @@ namespace FragmentNavigationExample.Fragments
 {
     public class SecondFragment : Fragment
     {
+        private String name;
+        public static SecondFragment NewInstance(String name)
+        {
+            SecondFragment fragment = new SecondFragment();
+
+            fragment.Arguments = new Bundle();
+            fragment.Arguments.PutString("NAME", name);
+            
+            return fragment;
+        }
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
             // Create your fragment here
+            if (this.Arguments != null) {
+                this.name = this.Arguments.GetString("NAME");
+            }
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -27,7 +40,33 @@ namespace FragmentNavigationExample.Fragments
             // Use this to return your custom view for this Fragment
             // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
 
-            return base.OnCreateView(inflater, container, savedInstanceState);
+            return inflater.Inflate(Resource.Layout.SecondLayout, container, false);
+        }
+
+        public override void OnViewCreated(View view, Bundle savedInstanceState)
+        {
+            TextView tvName = (TextView)view.FindViewById(Resource.Id.tvname);
+            tvName.Text = this.name;
+
+            Button btnBack = (Button)this.View.FindViewById(Resource.Id.btnBack);
+            btnBack.Click += delegate
+            {
+                this.FragmentManager.PopBackStack();
+            };
+
+            Button btnGoTo3rd = (Button)this.View.FindViewById(Resource.Id.btnGoTo3rd);
+            btnGoTo3rd.Click += delegate
+            {
+                var fragment = ThirdFragment.NewInstance();
+
+                var transaction = this.FragmentManager.BeginTransaction();
+
+                transaction.Replace(Resource.Id.mainContainer, fragment);
+
+                //transaction.AddToBackStack(null);
+
+                transaction.Commit();
+            };
         }
     }
 }
